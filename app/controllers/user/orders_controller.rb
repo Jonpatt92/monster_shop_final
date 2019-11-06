@@ -7,10 +7,20 @@ class User::OrdersController < ApplicationController
 
   def show
     @order = current_user.orders.find(params[:id])
+    @addresses = current_user.addresses
+  end
+
+  def new
+    if current_user.addresses.size >= 1
+      @addresses = current_user.addresses
+    else
+      flash[:alert] = "You must create an address to place your order"
+      redirect_to new_address_path
+    end
   end
 
   def create
-    order = current_user.orders.new
+    order = current_user.orders.new(address_id: params[:address])
     order.save
       cart.items.each do |item|
         order.order_items.create({
@@ -22,6 +32,11 @@ class User::OrdersController < ApplicationController
     session.delete(:cart)
     flash[:notice] = "Order created successfully!"
     redirect_to '/profile/orders'
+  end
+
+  def update
+    order = Order.find(params[:order_id])
+    redirect_to profile_orders_path if order.update(address_id: params[:address])
   end
 
   def cancel

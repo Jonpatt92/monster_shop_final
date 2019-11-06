@@ -7,6 +7,10 @@
     <p>Updated On: <%= order.updated_at %></p>
     <p>Status: <%= order.status %></p>
     <p><%= order.count_of_items %> items</p>
+    <p>Address: <%= order.address.nickname %> </p>
     <p>Total: <%= number_to_currency(order.grand_total) %></p>
+    <% if order.status == 'pending' %>
+      <%= button_to 'Cancel Order', "/profile/orders/#{order.id}", method: :delete %>
+    <% end %>
   </section>
 <% end %>
