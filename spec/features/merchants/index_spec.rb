@@ -7,7 +7,7 @@ RSpec.describe 'Merchant Index Page' do
       @brian = Merchant.create!(name: 'Brians Bagels', address: '125 Main St', city: 'Denver', state: 'CO', zip: 80218, enabled: false)
     end
 
-    xit 'I see a list of all merchants' do
+    it 'I see a list of all merchants' do
       visit '/merchants'
 
       within "#merchant-#{@megan.id}" do
@@ -21,7 +21,7 @@ RSpec.describe 'Merchant Index Page' do
       end
     end
 
-    xit 'I can click a link to get to a merchants show page' do
+    it 'I can click a link to get to a merchants show page' do
       visit '/merchants'
 
       click_link @megan.name
@@ -36,11 +36,12 @@ RSpec.describe 'Merchant Index Page' do
       @brian = Merchant.create!(name: 'Brians Bagels', address: '125 Main St', city: 'Denver', state: 'CO', zip: 80218, enabled: false)
       @giant = @megan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: false, inventory: 3 )
-      @admin = User.create(name: 'Megan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'megan@example.com', password: 'securepassword', role: :admin)
+      @admin = User.create(name: 'Sal', email: 'sal@example.com', password: 'securepassword', role: 'admin')
+      @admin.addresses.create(street_address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
     end
 
-    xit 'I can disable a merchant' do
+    it 'I can disable a merchant' do
       visit '/merchants'
 
       within "#merchant-#{@megan.id}" do
@@ -55,7 +56,7 @@ RSpec.describe 'Merchant Index Page' do
       end
     end
 
-    xit 'When I disable a merchant, their items become inactive' do
+    it 'When I disable a merchant, their items become inactive' do
       page.driver.submit :patch, "/admin/merchants/#{@megan.id}", {}
 
       visit items_path
@@ -63,7 +64,7 @@ RSpec.describe 'Merchant Index Page' do
       expect(page).to_not have_css("#item-#{@giant.id}")
     end
 
-    xit 'I can enable a merchant' do
+    it 'I can enable a merchant' do
       visit '/merchants'
 
       within "#merchant-#{@brian.id}" do
@@ -78,7 +79,7 @@ RSpec.describe 'Merchant Index Page' do
       end
     end
 
-    xit 'When I enable a merchant, their items become active' do
+    it 'When I enable a merchant, their items become active' do
       page.driver.submit :patch, "/admin/merchants/#{@brian.id}", {}
 
       visit items_path

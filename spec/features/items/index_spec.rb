@@ -10,7 +10,8 @@ RSpec.describe 'Item Index Page' do
       @giant = @megan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @nessie = @brian.items.create!(name: 'Nessie', description: "I'm a Loch Monster!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: false, inventory: 3 )
-      @user = User.create!(name: 'Megan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'megan@example.com', password: 'securepassword')
+      @user = User.create!(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
+      @user.addresses.create(street_address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       @order_1 = @user.orders.create!
       @order_2 = @user.orders.create!
       @order_3 = @user.orders.create!
@@ -19,7 +20,7 @@ RSpec.describe 'Item Index Page' do
       @order_2.order_items.create!(item: @hippo, price: @hippo.price, quantity: 5)
       @order_3.order_items.create!(item: @nessie, price: @nessie.price, quantity: 7)
     end
-    xit 'I can see a list of all active items' do
+    it 'I can see a list of all active items' do
       visit '/items'
 
       within "#item-#{@ogre.id}" do
@@ -61,7 +62,7 @@ RSpec.describe 'Item Index Page' do
       expect(page).to_not have_css("#item-#{@nessie.id}")
     end
 
-    xit 'I see the most and least popular items' do
+    it 'I see the most and least popular items' do
       visit items_path
 
       within '.statistics' do

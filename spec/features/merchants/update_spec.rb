@@ -6,7 +6,7 @@ RSpec.describe 'Existing Merchant Update' do
       @megan = Merchant.create!(name: 'Megans Marmalades', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
     end
 
-    xit 'I can link to an edit merchant page from merchant show page' do
+    it 'I can link to an edit merchant page from merchant show page' do
       visit "/merchants/#{@megan.id}"
 
       click_button 'Edit'
@@ -14,7 +14,7 @@ RSpec.describe 'Existing Merchant Update' do
       expect(current_path).to eq("/merchants/#{@megan.id}/edit")
     end
 
-    xit 'I can use the edit merchant form to update the merchant information' do
+    it 'I can use the edit merchant form to update the merchant information' do
       visit "/merchants/#{@megan.id}/edit"
 
       name = 'Megans Monsters'
@@ -42,7 +42,7 @@ RSpec.describe 'Existing Merchant Update' do
     end
 
 
-    xit 'I can not edit a merchant with an incomplete form' do
+    it 'I can not edit a merchant with an incomplete form' do
       visit "/merchants/#{@megan.id}/edit"
 
       name = 'Megans Marmalades'

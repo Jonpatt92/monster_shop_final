@@ -7,12 +7,13 @@ RSpec.describe 'Destroy Existing Merchant' do
       @brian = Merchant.create!(name: 'Brians Bagels', address: '125 Main St', city: 'Denver', state: 'CO', zip: 80218)
       @ogre = @megan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
       @giant = @brian.items.create!(name: 'Giant', description: "I'm a Giant!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
-      @user = User.create!(name: 'Megan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'megan@example.com', password: 'securepassword')
+      @user = User.create!(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
+      @user.addresses.create(street_address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       @order = @user.orders.create!
       @order.order_items.create(item: @ogre, quantity: 3, price: @ogre.price)
     end
 
-    xit 'I can click button to destroy merchant from database' do
+    it 'I can click button to destroy merchant from database' do
       visit "/merchants/#{@brian.id}"
 
       click_button 'Delete'
@@ -21,7 +22,7 @@ RSpec.describe 'Destroy Existing Merchant' do
       expect(page).to_not have_content(@brian.name)
     end
 
-    xit 'When a merchant is destroyed, their items are also destroyed' do
+    it 'When a merchant is destroyed, their items are also destroyed' do
       page.driver.submit :delete, merchant_path(@brian), {}
 
       visit items_path
@@ -30,13 +31,13 @@ RSpec.describe 'Destroy Existing Merchant' do
     end
 
     describe 'If a merchant has items that have been ordered' do
-      xit 'I do not see a button to delete the merchant' do
+      it 'I do not see a button to delete the merchant' do
         visit merchant_path(@megan)
 
         expect(page).to_not have_button('Delete')
       end
 
-      xit 'I can not delete a merchant' do
+      it 'I can not delete a merchant' do
         page.driver.submit :delete, merchant_path(@megan), {}
 
         expect(page).to have_content(@megan.name)

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Site Navigation' do
   describe 'As a Visitor' do
     describe 'I see a nav bar where I can link to' do
-      xit 'the welcome page' do
+      it 'the welcome page' do
         visit items_path
 
         within 'nav' do
@@ -13,7 +13,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(root_path)
       end
 
-      xit 'all items' do
+      it 'all items' do
         visit root_path
 
         within 'nav' do
@@ -23,7 +23,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(items_path)
       end
 
-      xit 'all merchants' do
+      it 'all merchants' do
         visit root_path
 
         within 'nav' do
@@ -33,7 +33,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(merchants_path)
       end
 
-      xit 'my cart' do
+      it 'my cart' do
         visit root_path
 
         within 'nav' do
@@ -43,7 +43,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(cart_path)
       end
 
-      xit 'the login page' do
+      it 'the login page' do
         visit root_path
 
         within 'nav' do
@@ -53,7 +53,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(login_path)
       end
 
-      xit 'the registraton page' do
+      it 'the registraton page' do
         visit root_path
 
         within 'nav' do
@@ -67,11 +67,12 @@ RSpec.describe 'Site Navigation' do
 
   describe 'As a User' do
     before :each do
-      @user = User.create(name: 'Megan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'megan@example.com', password: 'securepassword')
+      @user = User.create!(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
+      @user.addresses.create(street_address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
 
-    xit 'I see who I am logged in as' do
+    it 'I see who I am logged in as' do
       visit root_path
 
       within 'nav' do
@@ -80,7 +81,7 @@ RSpec.describe 'Site Navigation' do
     end
 
     describe 'I see a nav bar where I can link to' do
-      xit 'the welcome page' do
+      it 'the welcome page' do
         visit items_path
 
         within 'nav' do
@@ -90,7 +91,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(root_path)
       end
 
-      xit 'all items' do
+      it 'all items' do
         visit root_path
 
         within 'nav' do
@@ -100,7 +101,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(items_path)
       end
 
-      xit 'all merchants' do
+      it 'all merchants' do
         visit root_path
 
         within 'nav' do
@@ -110,7 +111,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(merchants_path)
       end
 
-      xit 'my cart' do
+      it 'my cart' do
         visit root_path
 
         within 'nav' do
@@ -120,7 +121,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(cart_path)
       end
 
-      xit 'the logout page' do
+      it 'the logout page' do
         visit root_path
 
         within 'nav' do
@@ -130,7 +131,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(root_path)
       end
 
-      xit 'my profile page' do
+      it 'my profile page' do
         visit root_path
 
         within 'nav' do
@@ -142,13 +143,13 @@ RSpec.describe 'Site Navigation' do
     end
 
     describe 'I do not see in my nav bar' do
-      xit 'the login link' do
+      it 'the login link' do
         visit root_path
 
         expect(page).to_not have_link('Log In')
       end
 
-      xit 'the registration link' do
+      it 'the registration link' do
         visit root_path
 
         expect(page).to_not have_link('Register')
@@ -159,11 +160,12 @@ RSpec.describe 'Site Navigation' do
   describe 'As a Merchant User' do
     before :each do
       @merchant = Merchant.create!(name: 'Megans Marmalades', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
-      @m_user = @merchant.users.create(name: 'Megan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'megan@example.com', password: 'securepassword')
+      @m_user = @merchant.users.create(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
+      @m_user.addresses.create(street_address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@m_user)
     end
 
-    xit 'I see who I am logged in as' do
+    it 'I see who I am logged in as' do
       visit root_path
 
       within 'nav' do
@@ -172,7 +174,7 @@ RSpec.describe 'Site Navigation' do
     end
 
     describe 'I see a nav bar where I can link to' do
-      xit 'the welcome page' do
+      it 'the welcome page' do
         visit items_path
 
         within 'nav' do
@@ -182,7 +184,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(root_path)
       end
 
-      xit 'all items' do
+      it 'all items' do
         visit root_path
 
         within 'nav' do
@@ -192,7 +194,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(items_path)
       end
 
-      xit 'all merchants' do
+      it 'all merchants' do
         visit root_path
 
         within 'nav' do
@@ -202,7 +204,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(merchants_path)
       end
 
-      xit 'my cart' do
+      it 'my cart' do
         visit root_path
 
         within 'nav' do
@@ -212,7 +214,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(cart_path)
       end
 
-      xit 'the logout page' do
+      it 'the logout page' do
         visit root_path
 
         within 'nav' do
@@ -222,7 +224,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(root_path)
       end
 
-      xit 'my profile page' do
+      it 'my profile page' do
         visit root_path
 
         within 'nav' do
@@ -232,7 +234,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(profile_path)
       end
 
-      xit 'my merchant page' do
+      it 'my merchant page' do
         visit root_path
 
         within 'nav' do
@@ -244,13 +246,13 @@ RSpec.describe 'Site Navigation' do
     end
 
     describe 'I do not see in my nav bar' do
-      xit 'the login link' do
+      it 'the login link' do
         visit root_path
 
         expect(page).to_not have_link('Log In')
       end
 
-      xit 'the registration link' do
+      it 'the registration link' do
         visit root_path
 
         expect(page).to_not have_link('Register')
@@ -260,11 +262,12 @@ RSpec.describe 'Site Navigation' do
 
   describe 'As an Admin' do
     before :each do
-      @admin = User.create(name: 'Megan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'megan@example.com', password: 'securepassword', role: :admin)
+      @admin = User.create(name: 'Sal', email: 'sal@example.com', password: 'securepassword', role: 'admin')
+      @admin.addresses.create(street_address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
     end
 
-    xit 'I see who I am logged in as' do
+    it 'I see who I am logged in as' do
       visit root_path
 
       within 'nav' do
@@ -273,7 +276,7 @@ RSpec.describe 'Site Navigation' do
     end
 
     describe 'I see a nav bar where I can link to' do
-      xit 'the welcome page' do
+      it 'the welcome page' do
         visit items_path
 
         within 'nav' do
@@ -283,7 +286,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(root_path)
       end
 
-      xit 'all items' do
+      it 'all items' do
         visit root_path
 
         within 'nav' do
@@ -293,7 +296,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(items_path)
       end
 
-      xit 'all merchants' do
+      it 'all merchants' do
         visit root_path
 
         within 'nav' do
@@ -303,7 +306,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(merchants_path)
       end
 
-      xit 'the logout page' do
+      it 'the logout page' do
         visit root_path
 
         within 'nav' do
@@ -313,7 +316,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(root_path)
       end
 
-      xit 'my profile page' do
+      it 'my profile page' do
         visit root_path
 
         within 'nav' do
@@ -323,7 +326,7 @@ RSpec.describe 'Site Navigation' do
         expect(current_path).to eq(profile_path)
       end
 
-      xit 'my merchant page' do
+      it 'my merchant page' do
         visit root_path
 
         within 'nav' do
@@ -335,19 +338,19 @@ RSpec.describe 'Site Navigation' do
     end
 
     describe 'I do not see in my nav bar' do
-      xit 'the login link' do
+      it 'the login link' do
         visit root_path
 
         expect(page).to_not have_link('Log In')
       end
 
-      xit 'the registration link' do
+      it 'the registration link' do
         visit root_path
 
         expect(page).to_not have_link('Register')
       end
 
-      xit 'a cart link' do
+      it 'a cart link' do
         visit root_path
 
         expect(page).to_not have_link('Cart')
