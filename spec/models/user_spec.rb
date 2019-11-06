@@ -36,5 +36,27 @@ RSpec.describe User do
       expect(@user.nickname_uniq?('Work')).to eq(false)
       expect(@user.nickname_uniq?('gf')).to eq(true)
     end
+
+    it '.current_address?' do
+      expect(@user.current_address?(@address_1.id)).to eq(true)
+      expect(@user.current_address?(@address_2.id)).to eq(false)
+    end
+
+    it '.address' do
+      expect(@user.address).to eq(@address_1.street_address)
+    end
+
+    it '.city' do
+      expect(@user.city).to eq(@address_1.city)
+    end
+
+    it '.state' do
+      expect(@user.state).to eq(@address_1.state)
+    end
+
+    it '.zip' do 
+      expect(@user.zip).to eq(@address_1.zip)
+    end
+
   end
 end

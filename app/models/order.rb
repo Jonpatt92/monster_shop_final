@@ -10,7 +10,7 @@ class Order < ApplicationRecord
   enum status: ['pending', 'packaged', 'shipped', 'cancelled']
 
   def assign_address
-    self.address = self.user.my_address if self.address == nil && self.user != nil
+    self.address = self.user.my_address if self.address_id == nil && self.user != nil
   end
 
   def grand_total

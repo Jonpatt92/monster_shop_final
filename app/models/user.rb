@@ -30,7 +30,23 @@ class User < ApplicationRecord
   def assign_address(address_id)
     self.default_address = address_id
     self.save
+    # Changes the current User's default_address column = to the address_id passed as an argument.
+    # Whenever the number of User Addresses == 1, either on creation of the 1st address. Or deletion of the 2nd existing address.
   end
-  # Changes the current User's default_address column = to the address_id passed as an argument.
-  # Whenever the number of User Addresses == 1, either on creation of the 1st address. Or deletion of the 2nd existing address.
+
+  def address # Lookup to preserve current views
+    self.my_address.street_address
+  end
+
+  def city # Lookup to preserve current views
+    self.my_address.city
+  end
+
+  def state # Lookup to preserve current views
+    self.my_address.state
+  end
+
+  def zip # Lookup to preserve current views
+    self.my_address.zip
+  end
 end

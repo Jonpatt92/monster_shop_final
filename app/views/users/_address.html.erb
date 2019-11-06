@@ -5,8 +5,8 @@
 <p>Current Address: <%= @address.nickname %></p>
 <p>Address: <%= @address.street_address %></p>
 <p><%= @address.city %>, <%= @address.state %> <%= @address.zip %></p>
-<%= link_to 'All Addresses', addresses_path %>
-<%= link_to 'Add New Address', new_address_path if !current_admin? %>
-<%= link_to 'Edit Current Address', edit_address_path(@address.id) if !current_admin? %>
-<%= link_to 'Delete Current Address', "/addresses/#{@address.id}", method: :delete if !current_admin? && @address.orders.empty? %>
-</section>
+<%= link_to 'All Addresses', addresses_path %> |
+<%= link_to 'Add New Address', new_address_path if !current_admin? %> |
+<%= link_to 'Edit Current Address', edit_address_path(@address.id) if !current_admin? %> |
+<%= link_to 'Delete Current Address', "/addresses/#{@address.id}", method: :delete if !current_admin? && @address.orders.empty? %> |
+</section><hr><br>

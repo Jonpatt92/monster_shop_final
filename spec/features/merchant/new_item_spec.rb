@@ -5,11 +5,12 @@ RSpec.describe 'New Merchant Item' do
   describe 'As a Merchant' do
     before :each do
       @merchant_1 = Merchant.create!(name: 'Megans Marmalades', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
-      @m_user = @merchant_1.users.create(name: 'Megan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'megan@example.com', password: 'securepassword')
+      @m_user = @merchant_1.users.create(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
+      @m_user.addresses.create(street_address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@m_user)
     end
 
-    xit 'I can click a link to a new item form page' do
+    it 'I can click a link to a new item form page' do
       visit "/merchant/items"
 
       click_link 'New Item'
@@ -17,7 +18,7 @@ RSpec.describe 'New Merchant Item' do
       expect(current_path).to eq("/merchant/items/new")
     end
 
-    xit 'I can create an  item for a merchant' do
+    it 'I can create an  item for a merchant' do
       name = 'Ogre'
       description = "I'm an Ogre!"
       price = 20
@@ -41,7 +42,7 @@ RSpec.describe 'New Merchant Item' do
       expect(page).to have_content("Inventory: #{inventory}")
     end
 
-    xit 'I can not create an  item for a merchant with an incomplete form' do
+    it 'I can not create an  item for a merchant with an incomplete form' do
       name = 'Ogre'
 
       visit "/merchant/items/new"

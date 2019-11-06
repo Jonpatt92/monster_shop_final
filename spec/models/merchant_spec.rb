@@ -47,8 +47,8 @@ RSpec.describe Merchant do
       expect(@brian.average_item_price.round(2)).to eq(50.00)
     end
 
-    xit '.distinct_cities' do
-      expect(@megan.distinct_cities).to eq(['Denver, CO', 'Denver, IA'])
+    it '.distinct_cities' do
+      expect(@megan.distinct_cities).to eq(['Denver, CO', 'Denver, IW'])
     end
 
     it '.pending_orders' do

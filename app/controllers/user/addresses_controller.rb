@@ -1,10 +1,6 @@
 class User::AddressesController < ApplicationController
   before_action :require_user
 
-  def show
-    @address = Address.find(params[:id])
-  end
-
   def index
     @user = current_user
     @addresses = @user.addresses
@@ -14,7 +10,7 @@ class User::AddressesController < ApplicationController
   end
 
   def create
-    user = current_user #User.find(params[:user_id])
+    user = current_user
     if user.nickname_uniq?(address_params[:nickname])
       address = user.addresses.new(address_params)
       if address.save && params[:default_address] == '1'
@@ -26,7 +22,7 @@ class User::AddressesController < ApplicationController
         flash[:success] = "You have created your #{address.nickname} address."
         redirect_to profile_path
       else
-        generate_flash(address)
+        flash.now[:error] = address.errors.full_messages.to_sentence
         render :new
       end
     else

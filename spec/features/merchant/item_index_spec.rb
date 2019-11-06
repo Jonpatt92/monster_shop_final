@@ -6,7 +6,8 @@ RSpec.describe 'Merchant Item Index' do
     before :each do
       @merchant_1 = Merchant.create!(name: 'Megans Marmalades', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       @merchant_2 = Merchant.create!(name: 'Brians Bagels', address: '125 Main St', city: 'Denver', state: 'CO', zip: 80218)
-      @m_user = @merchant_1.users.create(name: 'Megan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'megan@example.com', password: 'securepassword')
+      @m_user = @merchant_1.users.create(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
+      @m_user.addresses.create(street_address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       @ogre = @merchant_1.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20.25, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
       @nessie = @merchant_1.items.create!(name: 'Nessie', description: "I'm a Loch Monster!", price: 20.25, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
       @giant = @merchant_1.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: false, inventory: 3 )
@@ -21,7 +22,7 @@ RSpec.describe 'Merchant Item Index' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@m_user)
     end
 
-    xit 'I can link to my merchant items from the merchant dashboard' do
+    it 'I can link to my merchant items from the merchant dashboard' do
       visit '/merchant'
 
       click_link 'My Items'
@@ -29,7 +30,7 @@ RSpec.describe 'Merchant Item Index' do
       expect(current_path).to eq('/merchant/items')
     end
 
-    xit 'I see my items, with statistics, including inactive items' do
+    it 'I see my items, with statistics, including inactive items' do
       visit '/merchant/items'
 
       within '.statistics' do
@@ -60,7 +61,7 @@ RSpec.describe 'Merchant Item Index' do
       end
     end
 
-    xit 'I can deactivate an item' do
+    it 'I can deactivate an item' do
       visit '/merchant/items'
 
       within "#item-#{@ogre.id}" do
@@ -79,7 +80,7 @@ RSpec.describe 'Merchant Item Index' do
       end
     end
 
-    xit 'I can activate an item' do
+    it 'I can activate an item' do
       visit '/merchant/items'
 
       within "#item-#{@giant.id}" do
@@ -98,7 +99,7 @@ RSpec.describe 'Merchant Item Index' do
       end
     end
 
-    xit 'I can delete items that have not been ordered' do
+    it 'I can delete items that have not been ordered' do
       visit '/merchant/items'
 
       within "#item-#{@nessie.id}" do
@@ -114,7 +115,7 @@ RSpec.describe 'Merchant Item Index' do
       expect(page).to_not have_css("#item-#{@nessie.id}")
     end
 
-    xit 'I can not delete items that have been ordered' do
+    it 'I can not delete items that have been ordered' do
       visit '/merchant/items'
 
       within "#item-#{@ogre.id}" do
@@ -124,7 +125,7 @@ RSpec.describe 'Merchant Item Index' do
       page.driver.submit :delete, "/merchant/items/#{@ogre.id}", {}
 
       expect(current_path).to eq('/merchant/items')
-      expect(page).to have_content("#{@ogre.name} can not be deleted - xit has been ordered!")
+      expect(page).to have_content("#{@ogre.name} can not be deleted - it has been ordered!")
     end
   end
 end

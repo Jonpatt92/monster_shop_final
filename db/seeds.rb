@@ -25,8 +25,12 @@ dog_bone = dog_shop.items.create(name: "Dog Bone", description: "They'll love it
 user = User.create!(name: 'Patti', email: 'pattaymonkey34@gmail.com', password: 'banana')
 user_address = user.addresses.create(street_address: '953 Sunshine Ave', city: 'Honolulu', state: 'Hawaii', zip: '96701')
 
-user_2 = User.create(name: 'Leslie', email: 'leslieknop@gmail.com', password: 'waffles')
-user_2_address = user_2.addresses.create(street_address: '252 Pawnee Avenue', city: 'Pawnee', state: 'Indiana', zip: '80503')
+user_2 = User.create(name: 'Leslie', email: 'leslieknope@gmail.com', password: 'waffles')
+user_2_address_1 = user_2.addresses.create(street_address: '252 Pawnee Avenue', city: 'Pawnee', state: 'Indiana', zip: '80503')
+user_2_address_2 = user_2.addresses.create(street_address: '953 Sunshine Ave', city: 'Honolulu', state: 'Hawaii', zip: '96701', nickname: "Work")
+user_2_address_3 = user_2.addresses.create(street_address: '75 Chef Ave', city: 'Utica', state: 'New York', zip: '45827', nickname: "Ron")
+
+
 
 # merchant_employee = User.create(name: 'Ross', email: 'dinosaur_rule@gmail.com', password: 'rachel', role: 1, merchant: dog_shop)
 # merchant_employee_address = merchant_employee.addresses.create(street_address: '56 HairGel Ave', city: 'Las Vegas', state: 'Nevada', zip: '65041')

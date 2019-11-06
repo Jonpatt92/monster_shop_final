@@ -138,5 +138,44 @@ RSpec.describe "Address Creation" do
         expect(page).to have_content(@address_2.zip)
       end
     end
+    it "I can't create an address without requred fields" do
+
+      visit login_path
+      fill_in 'Email', with: @user.email
+      fill_in 'Password', with: @user.password
+      click_button 'Log In'
+
+      visit profile_path
+      within "#current-address" do
+        click_link 'Add New Address'
+      end
+
+      expect(current_path).to eq(new_address_path)
+
+      address = '124 new str'
+      state = 'NY'
+      city = 'Badville'
+      zip = 12034
+      nickname = 'dealer'
+
+      fill_in "street_address", with: address
+      fill_in "State", with: state
+      fill_in "Zip", with: zip
+      fill_in "Nickname", with: nickname
+      select("No", from: 'default_address')
+      click_button 'Create Address'
+
+      expect(page).to have_content("City can't be blank")
+
+      fill_in "street_address", with: address
+      fill_in "City", with: city
+      fill_in "State", with: state
+      fill_in "Zip", with: zip
+      fill_in "Nickname", with: 'Work'
+      select("No", from: 'default_address')
+      click_button 'Create Address'
+
+      expect(page).to have_content("That nickname is already taken")
+    end
   end
 end

@@ -1,0 +1,8 @@
+<h3>Select which address you would like your order shipped to.</h3>
+<%= form_tag "/orders", method: :post do %>
+
+  <%= label_tag "Your Addresses" %>
+  <%= select_tag "address", options_from_collection_for_select(@addresses, 'id', 'nickname') %>
+  
+  <%= submit_tag "Submit" %>
+<% end %>

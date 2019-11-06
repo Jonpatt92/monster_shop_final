@@ -21,7 +21,6 @@ class UsersController < ApplicationController
       flash[:notice] = "Welcome, #{@user.name}!"
       redirect_to profile_path
     else
-
       flash.now[:error] = @user.errors.full_messages.to_sentence.gsub("Addresses", '')
       render :new
     end
