@@ -4,7 +4,16 @@
 <p>Status: <%= @order.status %></p>
 <p><%= @order.count_of_items %> items</p>
 <p>Total: <%= number_to_currency(@order.grand_total) %></p>
-<%= button_to 'Cancel Order', "/profile/orders/#{@order.id}", method: :delete if @order.pending? %>
+
+<% if @order.status == 'pending' %>
+  <%= button_to 'Cancel Order', "/profile/orders/#{@order.id}", method: :delete %>
+  <%= form_tag "/profile/orders/#{@order.id}", method: :patch do %>
+    <%= label_tag "Choose which Address you'd like to use" %>
+    <%= select_tag "address", options_from_collection_for_select(@addresses, 'id', 'nickname') %>
+    <%= submit_tag "Submit" %>
+  <% end %>
+<% end %>
+
 
 <h2>Order Items</h2>
 <% @order.order_items.each do |order_item| %>
