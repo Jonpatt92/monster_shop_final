@@ -26,12 +26,14 @@ Rails.application.routes.draw do
   get '/profile/edit_password', to: 'users#edit_password'
   patch '/user/assign_address/:address_id', to: 'users#assign_default'
 
+  get '/orders/new', to: 'user/orders#new'
   post '/orders', to: 'user/orders#create'
   get '/profile/orders', to: 'user/orders#index'
   get '/profile/orders/:id', to: 'user/orders#show'
+  patch '/profile/orders/:order_id', to: 'user/orders#update'
   delete '/profile/orders/:id', to: 'user/orders#cancel'
 
-  resources :addresses, module: 'user' #path: '/profile'
+  resources :addresses, module: 'user' 
 
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#login'
