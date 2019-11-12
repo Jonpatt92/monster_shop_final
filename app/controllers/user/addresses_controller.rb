@@ -66,12 +66,13 @@ class User::AddressesController < ApplicationController
     end
   end
 
-  def assign_default
-    user = current_user
-    user.assign_address(params[:address_id])
-  end
-
   private
+
+    def assign_default
+      user = current_user
+      user.assign_address(params[:address_id])
+    end
+
     def address_params
       params.permit(:street_address, :city, :state, :zip, :nickname)
     end

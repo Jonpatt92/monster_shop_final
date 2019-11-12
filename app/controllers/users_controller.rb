@@ -28,20 +28,27 @@ class UsersController < ApplicationController
 
   def edit
     @user = current_user
-  end
-
-  def edit_password
-    @user = current_user
+    if request.env['PATH_INFO'] == "/profile/edit/password"
+      @password_change = true
+    else
+      @password_change = false
+    end
   end
 
   def update
     @user = current_user
-    if @user.update(user_params)
-      flash[:notice] = 'Profile has been updated!'
-      redirect_to profile_path
+    if params[:address_id]
+      assign_default
     else
-      generate_flash(@user)
-      render :edit
+      @user.update(user_params)
+      if @user.save
+        update_flash(@user)
+        redirect_to "/profile"
+      else
+        flash[:error] = @user.errors.full_messages.to_sentence
+        redirect_to "/profile/edit" if !user_params[:password_confirmation]
+        redirect_to "/profile/edit/password" if user_params[:password_confirmation]
+      end
     end
   end
 
@@ -55,10 +62,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_flash(user)
+    flash[:sucess] = "Hello, #{user.name}! You have successfully updated your profile." if !user_params[:password_confirmation]
+    flash[:sucess] = "Hello, #{user.name}! You have successfully updated your password." if user_params[:password_confirmation]
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :default_address) #, addresses_attributes: [ :address, :city, :state, :zip ]) for accepts_nested_attributes_for :addresses *in the user model*
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :default_address)
   end
 
   def address_params

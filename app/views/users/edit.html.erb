@@ -1,9 +1,5 @@
-<%= form_for @user do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-
-  <%= f.label :email %>
-  <%= f.email_field :email %>
-
-  <%= f.submit 'Update Profile' %>
+<% if @password_change %>
+  <%= render partial: "edit_password", locals: { object: @user, button: 'Change Password'} %>
+<% elsif !@password_change %>
+  <%= render partial: "edit_profile", locals: { object: @user, button: 'Update Profile'} %>
 <% end %>

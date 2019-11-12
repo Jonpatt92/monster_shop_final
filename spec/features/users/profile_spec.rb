@@ -41,16 +41,18 @@ RSpec.describe "User Profile Path" do
 
       expect(current_path).to eq('/profile/edit')
 
-      name = 'New Name'
+      name = 'Pat'
       email = 'new@example.com'
 
       fill_in "Name", with: name
       fill_in "Email", with: email
       click_button 'Update Profile'
+      @user.reload
 
       expect(current_path).to eq(profile_path)
 
-      expect(page).to have_content('Profile has been updated!')
+      expect(page).to have_content('Hello, Pat! You have successfully updated your profile.')
+
       expect(page).to have_content(name)
       expect(page).to have_content(email)
     end
@@ -64,17 +66,18 @@ RSpec.describe "User Profile Path" do
 
       click_link 'Change Password'
 
-      expect(current_path).to eq('/profile/edit_password')
+      expect(current_path).to eq('/profile/edit/password')
 
       password = "newpassword"
 
       fill_in "Password", with: password
       fill_in "Password confirmation", with: password
       click_button 'Change Password'
+      @user.reload
 
       expect(current_path).to eq(profile_path)
 
-      expect(page).to have_content('Profile has been updated!')
+      expect(page).to have_content("Hello, Megan! You have successfully updated your password.")
 
       click_link 'Log Out'
 
@@ -95,6 +98,23 @@ RSpec.describe "User Profile Path" do
       expect(current_path).to eq(profile_path)
     end
 
+    it "Won't let me use a password that doesn't match" do
+      visit login_path
+
+      fill_in 'Email', with: @user.email
+      fill_in 'Password', with: @user.password
+      click_button 'Log In'
+
+      click_link 'Change Password'
+
+      fill_in 'Password', with: "apple"
+      fill_in 'Password confirmation', with: "notanapple"
+      click_button 'Change Password'
+
+      expect(current_path).to eq("/profile/edit/password")
+      expect(page).to have_content("Password confirmation doesn't match Password")
+    end
+
     it "I must use a unique email address" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
@@ -103,8 +123,8 @@ RSpec.describe "User Profile Path" do
       fill_in "Email", with: @admin.email
       click_button "Update Profile"
 
-      expect(page).to have_content("email: [\"has already been taken\"]")
-      expect(page).to have_button "Update Profile"
+      expect(page).to have_content("Email has already been taken")
+      expect(page).to have_button("Update Profile")
     end
   end
 end
