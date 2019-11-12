@@ -10,7 +10,6 @@ Merchant.destroy_all
 Item.destroy_all
 User.destroy_all
 
-
 #merchants
 bike_shop = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
 dog_shop = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.', city: 'Denver', state: 'CO', zip: 80210)
@@ -22,7 +21,7 @@ tire = bike_shop.items.create(name: "Gatorskins", description: "They'll never po
 pull_toy = dog_shop.items.create(name: "Pull Toy", description: "Great pull toy!", price: 10, image: "http://lovencaretoys.com/image/cache/dog/tug-toy-dog-pull-9010_2-800x800.jpg", inventory: 32)
 dog_bone = dog_shop.items.create(name: "Dog Bone", description: "They'll love it!", price: 21, image: "https://img.chewy.com/is/image/catalog/54226_MAIN._AC_SL1500_V1534449573_.jpg", inventory: 21)
 
-user = User.create!(name: 'Patti', email: 'pattaymonkey34@gmail.com', password: 'banana')
+user = User.create!(name: 'Patti', email: 'pattymonkey34@gmail.com', password: 'banana')
 user_address = user.addresses.create(street_address: '953 Sunshine Ave', city: 'Honolulu', state: 'Hawaii', zip: '96701')
 
 user_2 = User.create(name: 'Leslie', email: 'leslieknope@gmail.com', password: 'waffles')
@@ -32,11 +31,11 @@ user_2_address_3 = user_2.addresses.create(street_address: '75 Chef Ave', city: 
 
 
 
-# merchant_employee = User.create(name: 'Ross', email: 'dinosaur_rule@gmail.com', password: 'rachel', role: 1, merchant: dog_shop)
-# merchant_employee_address = merchant_employee.addresses.create(street_address: '56 HairGel Ave', city: 'Las Vegas', state: 'Nevada', zip: '65041')
+merchant_employee = User.create(name: 'Ross', email: 'dinosaur_rule@gmail.com', password: 'rachel', role: 1, merchant: dog_shop)
+merchant_employee_address = merchant_employee.addresses.create(street_address: '56 HairGel Ave', city: 'Las Vegas', state: 'Nevada', zip: '65041')
 #
-# merchant_admin = User.create(name: 'Ross', email: 'redros', password: 'emily', role: 1, merchant: bike_shop)
-# merchant_admin_address = merchant_admin.addresses.create(street_address: '56 HairGel Ave', city: 'Las Vegas', state: 'Nevada', zip: '65041')
+merchant_admin = User.create(name: 'Ross', email: 'redros', password: 'emily', role: 1, merchant: bike_shop)
+merchant_admin_address = merchant_admin.addresses.create(street_address: '56 HairGel Ave', city: 'Las Vegas', state: 'Nevada', zip: '65041')
 
 admin = User.create(name: 'Monica', email: 'adminn@gmail.com', password: 'admin', role: 2)
 admin_address = admin.addresses.create(street_address: '75 Chef Ave', city: 'Utica', state: 'New York', zip: '45827')
