@@ -13,19 +13,17 @@ Rails.application.routes.draw do
   resources :reviews, only: [:edit, :update, :destroy]
 
   get '/cart', to: 'cart#show'
-  post '/cart/:item_id', to: 'cart#add_item'
-  delete '/cart', to: 'cart#empty'
-  patch '/cart/:change/:item_id', to: 'cart#update_quantity'
-  delete '/cart/:item_id', to: 'cart#remove_item'
+  post '/cart/:item_id', to: 'cart#create'
+  patch '/cart/:change/:item_id', to: 'cart#update'
+  delete '/cart', to: 'cart#destroy'
+  delete '/cart/:item_id', to: 'cart#destroy'
 
   get '/registration', to: 'users#new', as: :registration
   resources :users, only: [:create, :update]
-  # patch '/profile/:user_id/password', to: 'users#update'
-  # put '/profile/:user_id', to: 'users#update'
   get '/profile', to: 'users#show'
   get '/profile/edit', to: 'users#edit'
   get '/profile/edit/password', to: 'users#edit'
-  patch '/user/assign_address/:address_id', to: 'users#assign_default'
+  put '/user/assign_address/:address_id', to: 'users#update'
 
   get '/orders/new', to: 'user/orders#new'
   post '/orders', to: 'user/orders#create'

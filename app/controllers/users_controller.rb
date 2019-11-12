@@ -36,16 +36,19 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
-    @user.update(user_params)
-    if @user.save
-      flash[:sucess] = "Hello, #{@user.name}! You have successfully updated your profile." if !user_params[:password_confirmation]
-      flash[:sucess] = "Hello, #{@user.name}! You have successfully updated your password." if user_params[:password_confirmation]
-      redirect_to "/profile"
+    @user = current_user
+    if params[:address_id]
+      assign_default
     else
-      flash[:error] = @user.errors.full_messages.to_sentence
-      redirect_to "/profile/edit" if !user_params[:password_confirmation]
-      redirect_to "/profile/edit/password" if user_params[:password_confirmation]
+      @user.update(user_params)
+      if @user.save
+        update_flash(@user)
+        redirect_to "/profile"
+      else
+        flash[:error] = @user.errors.full_messages.to_sentence
+        redirect_to "/profile/edit" if !user_params[:password_confirmation]
+        redirect_to "/profile/edit/password" if user_params[:password_confirmation]
+      end
     end
   end
 
@@ -57,6 +60,11 @@ class UsersController < ApplicationController
       flash[:success] = "You have set '#{address.nickname}' as your default address"
       redirect_to profile_path
     end
+  end
+
+  def update_flash(user)
+    flash[:sucess] = "Hello, #{user.name}! You have successfully updated your profile." if !user_params[:password_confirmation]
+    flash[:sucess] = "Hello, #{user.name}! You have successfully updated your password." if user_params[:password_confirmation]
   end
 
   private

@@ -87,7 +87,7 @@ RSpec.describe 'Cart Show Page' do
         end
 
         expect(current_path).to eq('/cart')
-        expect(page).to_not have_content("#{@hippo.name}")
+        expect(page).to have_content("#{@hippo.name} has been removed from your cart!")
         expect(page).to have_content('Cart: 1')
         expect(page).to have_content("#{@ogre.name}")
       end
@@ -163,9 +163,11 @@ RSpec.describe 'Cart Show Page' do
           click_button('Less of This!')
         end
 
-        expect(current_path).to eq('/cart')
-        expect(page).to_not have_content("#{@hippo.name}")
+        # expect(current_path).to eq('/cart')
+        expect(page).to have_content("#{@hippo.name} has been removed from your cart!")
         expect(page).to have_content("Cart: 0")
+        expect(page).to have_content("Your Cart is Empty!")
+
       end
     end
   end
