@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     end
   end
 
-  def login
+  def create
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
       login_redirect(user)
@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
     end
   end
 
-  def logout
+  def destroy
     session.delete(:user_id)
     session.delete(:cart)
     flash[:notice] = 'You have been logged out!'

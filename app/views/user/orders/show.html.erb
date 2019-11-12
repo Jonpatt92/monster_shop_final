@@ -6,7 +6,7 @@
 <p>Total: <%= number_to_currency(@order.grand_total) %></p>
 
 <% if @order.status == 'pending' %>
-  <%= button_to 'Cancel Order', "/profile/orders/#{@order.id}", method: :delete %>
+  <%= button_to 'Cancel Order', "/profile/orders/#{@order.id}", method: :put %>
   <%= form_tag "/profile/orders/#{@order.id}", method: :patch do %>
     <%= label_tag "Choose which Address you'd like to use" %>
     <%= select_tag "address", options_from_collection_for_select(@addresses, 'id', 'nickname') %>

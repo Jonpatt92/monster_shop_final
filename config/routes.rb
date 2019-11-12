@@ -31,26 +31,26 @@ Rails.application.routes.draw do
   get '/profile/orders', to: 'user/orders#index'
   get '/profile/orders/:id', to: 'user/orders#show'
   patch '/profile/orders/:order_id', to: 'user/orders#update'
-  delete '/profile/orders/:id', to: 'user/orders#cancel'
+  put '/profile/orders/:order_id', to: 'user/orders#update'
 
-  resources :addresses, module: 'user' 
+  resources :addresses, module: 'user', except: :show
 
   get '/login', to: 'sessions#new'
-  post '/login', to: 'sessions#login'
-  get '/logout', to: 'sessions#logout'
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy', as: 'logout'
 
   namespace :merchant do
     get '/', to: 'dashboard#index', as: :dashboard
     resources :orders, only: :show
     resources :items, only: [:index, :new, :create, :edit, :update, :destroy]
-    put '/items/:id/change_status', to: 'items#change_status'
-    get '/orders/:id/fulfill/:order_item_id', to: 'orders#fulfill'
+    put '/items/:id/change_status', to: 'items#update'
+    get '/orders/:id/fulfill/:order_item_id', to: 'orders#update'
   end
 
   namespace :admin do
     get '/', to: 'dashboard#index', as: :dashboard
     resources :merchants, only: [:show, :update]
     resources :users, only: [:index, :show]
-    patch '/orders/:id/ship', to: 'orders#ship'
+    patch '/orders/:id/ship', to: 'orders#update'
   end
 end

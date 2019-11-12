@@ -36,12 +36,12 @@ class User::OrdersController < ApplicationController
 
   def update
     order = Order.find(params[:order_id])
-    redirect_to profile_orders_path if order.update(address_id: params[:address])
-  end
-
-  def cancel
-    order = current_user.orders.find(params[:id])
-    order.cancel
-    redirect_to "/profile/orders/#{order.id}"
+    if request.env['REQUEST_METHOD'] == "PATCH"
+      redirect_to profile_orders_path if order.update(address_id: params[:address])
+    elsif request.env['REQUEST_METHOD'] == "PUT"
+      # order = current_user.orders.find(params[:id]) #This was in the now merged Cancel method
+      order.cancel
+      redirect_to "/profile/orders/#{order.id}"
+    end
   end
 end

@@ -23,24 +23,34 @@ class Merchant::ItemsController < Merchant::BaseController
 
   def update
     @item = Item.find(params[:id])
-    if @item.update(item_params)
-      redirect_to "/merchant/items"
-    else
-      generate_flash(@item)
-      render :edit
+    if request.env['REQUEST_METHOD'] == "PATCH"
+      if @item.update(item_params)
+        redirect_to "/merchant/items"
+      else
+        generate_flash(@item)
+        render :edit
+      end
+    elsif request.env['REQUEST_METHOD'] == "PUT"
+      @item.update(active: !@item.active)
+      if @item.active?
+        flash[:notice] = "#{@item.name} is now available for sale"
+      else
+        flash[:notice] = "#{@item.name} is no longer for sale"
+      end
+      redirect_to '/merchant/items'
     end
   end
 
-  def change_status
-    item = Item.find(params[:id])
-    item.update(active: !item.active)
-    if item.active?
-      flash[:notice] = "#{item.name} is now available for sale"
-    else
-      flash[:notice] = "#{item.name} is no longer for sale"
-    end
-    redirect_to '/merchant/items'
-  end
+  # def change_status
+  #   item = Item.find(params[:id])
+  #   item.update(active: !item.active)
+  #   if item.active?
+  #     flash[:notice] = "#{item.name} is now available for sale"
+  #   else
+  #     flash[:notice] = "#{item.name} is no longer for sale"
+  #   end
+  #   redirect_to '/merchant/items'
+  # end
 
   def destroy
     item = Item.find(params[:id])
